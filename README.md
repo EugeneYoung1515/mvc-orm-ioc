@@ -1,6 +1,6 @@
 # mvc-orm-ioc
 
-主要使用反射、注解和常用数据结构(List、Map等)开发的微型框架，使得能够复用另一个项目(基于Spring、Spring MVC、Hibernate开发的论坛)Dao层以外的大部分代码。框架代码主要在com.smart.core包及其子包。  
+主要使用反射、注解和常用数据结构(List、Map等)开发的微型框架，使得能够复用[另一个项目](https://github.com/EugeneYoung1515/zero-xml-forum)(基于Spring、Spring MVC、Hibernate开发的论坛)Dao层以外的大部分代码。框架代码主要在com.smart.core包及其子包。  
 
 - **MVC**
 
