@@ -39,10 +39,10 @@ public class ApplicationListener implements ServletContextListener {//这个类�
             properties.load(inputStream);
             topPackageName = properties.getProperty("topPackageName");
 
-            ConnectionManager.driver = properties.getProperty("jdbcDriver");
-            ConnectionManager.url = properties.getProperty("jdbcUrl");
-            ConnectionManager.user = properties.getProperty("jdbcUser");
-            ConnectionManager.password = properties.getProperty("jdbcPassword");
+            ConnectionManager.driver = properties.getProperty("jdbc.driverClassName");
+            ConnectionManager.url = properties.getProperty("jdbc.url");
+            ConnectionManager.user = properties.getProperty("jdbc.username");
+            ConnectionManager.password = properties.getProperty("jdbc.password");
         }catch (IOException ex){
             ex.printStackTrace();
         }

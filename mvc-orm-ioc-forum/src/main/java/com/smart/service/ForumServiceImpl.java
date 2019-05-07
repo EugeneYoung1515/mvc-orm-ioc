@@ -52,7 +52,17 @@ public class ForumServiceImpl implements ForumService{
 		post.setUser(topic.getUser());//**** //**** [[[
 		post.setPostTitle(topic.getTopicTitle());
 		post.setBoardId(topic.getBoardId());
+
+		//post.setPostType(Post.TYPE2);//把model类的语句搬到这里了
+
 		postDao.save(topic.getMainPost()); //**** [[[
+
+		//System.out.println(post.postType+"dfdf");
+		//Post p = post;
+		//System.out.println(p.postType+"dfdf");
+		//结果
+		//2dfdf
+		//1dfdf
 
 		User user = topic.getUser(); //**** [[[
 		user.setCredit(user.getCredit() - 10);

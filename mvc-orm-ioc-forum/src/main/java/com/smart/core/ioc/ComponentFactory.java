@@ -1,6 +1,7 @@
 package com.smart.core.ioc;
 
 import com.smart.core.ioc.annotations.Autowired;
+import com.smart.core.orm.BaseDao;
 import com.smart.core.orm.transaction.TransactionProxy;
 
 import java.lang.reflect.Method;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ComponentFactory {
+    public static Map<String,Object> modelSimpleNameToDaoMap;
     public static List<Object> createComponentAndReturnControllerList(String packageName){
         try {
             ClassUtil.getClasses(packageName);
@@ -18,14 +20,20 @@ public class ComponentFactory {
         }
 
         Map<String,Object> repositoryMap = new HashMap<>(16);
+
+        modelSimpleNameToDaoMap = new HashMap<>(16);
         ClassUtil.repositoryMap.forEach((k,v)->{
             try {
-                repositoryMap.put(k, v.newInstance());
+                Object dao = v.newInstance();
+                repositoryMap.put(k,dao);
+                modelSimpleNameToDaoMap.put(((BaseDao)dao).getEntityClass().getSimpleName(),dao);
             }catch (Exception ex){
                 ex.printStackTrace();
             }
         });
 
+
+        /*
         ClassUtil.repositoryMap.forEach((k,v)->{
             try {
                 Method[] methods = v.getMethods();
@@ -41,6 +49,7 @@ public class ComponentFactory {
                 ex.printStackTrace();
             }
         });
+        */
 
         Map<String,Object> serviceMap = new HashMap<>(16);
         Map<String,String> serviceInterfaceMap = new HashMap<>(16);

@@ -78,6 +78,12 @@
 	</script>
 	<div>
 		<table border="1px" width="100%">
+			<c:set var="isboardManager" value="${false}" />
+			<c:forEach items="${USER_CONTEXT.manBoards}" var="manBoard">
+				<c:if test="${manBoard.boardId == board.boardId}">
+					<c:set var="isboardManager" value="${true}" />
+				</c:if>
+			</c:forEach>
 			<tr>
 			   <c:if test="${USER_CONTEXT.userType == 2 || isboardManager}">
 			     <td></td>

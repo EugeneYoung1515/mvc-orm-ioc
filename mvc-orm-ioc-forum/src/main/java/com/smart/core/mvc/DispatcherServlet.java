@@ -22,6 +22,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.Map;
 
@@ -285,6 +286,7 @@ public class DispatcherServlet extends HttpServlet {
     }
 
 
+    /*
     private Object formToBean(Class<?> cl,HttpServletRequest httpServletRequest) throws Exception{
         Object o = cl.newInstance();
         Field[] fields = cl.getDeclaredFields();
@@ -309,6 +311,96 @@ public class DispatcherServlet extends HttpServlet {
                 if(formToBean.contains(field.getType().getSimpleName())){
                     Object obj = formToBean(field.getType(),httpServletRequest);
                     field.set(o,obj);
+                }
+            }
+        }
+        return o;
+    }
+    */
+
+
+    //两处问题
+    //1.type错
+    //2.拿不到posttext
+    //原因 继承和Field类
+
+    /*
+    private Object formToBean(Class<?> cl,HttpServletRequest httpServletRequest,String... fieldName) throws Exception{
+        Object o = cl.newInstance();
+        Field[] fields = cl.getDeclaredFields();
+        String param;
+        String prefixFieldName = "";
+        if(fieldName.length > 0){
+            prefixFieldName = fieldName[0]+".";
+        }
+        for (Field field:fields){
+            field.setAccessible(true);
+            if(field.getType().equals(String.class)){
+                if(field.get(o)==null) {//这个可能会有问题
+                    param = httpServletRequest.getParameter(prefixFieldName + field.getName());
+                    field.set(o, param);
+                }
+            }else if(field.getType().equals(int.class)){
+                param = httpServletRequest.getParameter(prefixFieldName+field.getName());
+                if(param!=null){
+                    field.set(o,Integer.parseInt(param));
+                }
+            }else {
+                //1if(formToBean.contains(field.getType().getSimpleName())){
+                //1System.out.println((prefixFieldName+field.getName()+"."+"kk"));
+
+                    Enumeration<String> enumeration = httpServletRequest.getParameterNames();
+                    while (enumeration.hasMoreElements()){
+                        if(enumeration.nextElement().contains(prefixFieldName+field.getName()+".")){
+                            System.out.println((prefixFieldName+field.getName()+"."+"kk"));
+                            Object obj = formToBean(field.getType(),httpServletRequest,prefixFieldName+field.getName());
+                            field.set(o,obj);
+                            break;
+                        }
+                    }
+                    //1Object obj = formToBean(field.getType(),httpServletRequest,prefixFieldName+field.getName());
+                    //1field.set(o,obj);
+                //1}//有formToBean这个List在还是耦合的
+                //1处是可以的
+            }
+        }
+        return o;
+    }
+    */
+
+    private Object formToBean(Class<?> cl,HttpServletRequest httpServletRequest,String... fieldName) throws Exception{
+        Object o = cl.newInstance();
+        Method[] methods = cl.getMethods();
+        String param;
+        String prefixFieldName = "";
+        if(fieldName.length > 0){
+            prefixFieldName = fieldName[0]+".";
+        }
+        for(Method method:methods){
+            String methodName = method.getName();
+            if(methodName.startsWith("set")){
+                String field = methodName.substring(3,4).toLowerCase()+methodName.substring(4);
+                //System.out.println(field+"method");
+                if(method.getParameterTypes()[0].equals(String.class)){
+                    param = httpServletRequest.getParameter(prefixFieldName + field);
+                    if(param!=null&& !param.equals("")){
+                        method.invoke(o,param);
+                    }
+                }else if(method.getParameterTypes()[0].equals(int.class)){
+                    param = httpServletRequest.getParameter(prefixFieldName + field);
+                    if(param!=null&& !param.equals("")){
+                        method.invoke(o,Integer.parseInt(param));
+                    }
+                }else {
+                    Enumeration<String> enumeration = httpServletRequest.getParameterNames();
+                    while (enumeration.hasMoreElements()){
+                        if(enumeration.nextElement().contains(prefixFieldName+field+".")){
+                            Object obj = formToBean(method.getParameterTypes()[0],httpServletRequest,prefixFieldName+field);
+                            method.invoke(o,obj);
+                            break;
+                        }
+                    }
+
                 }
             }
         }

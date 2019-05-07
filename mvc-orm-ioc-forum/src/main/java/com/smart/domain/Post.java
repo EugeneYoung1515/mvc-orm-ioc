@@ -12,13 +12,31 @@ import java.util.Date;
 public class Post extends BaseDomain {
 	//看MainPost 实例变量比表少了Post_type
 
+	/*
 	@Column(name = "post_type")
 	private int postType=TYPE1;
 
 	public static final int TYPE1 = 1;
 
 	public static final int TYPE2 = 2;
-	
+	*/
+
+	public Post(){
+		this(TYPE1);
+	}
+
+
+	public Post(String postType) {
+		this.postType = postType;
+	}
+
+	@Column(name = "post_type")
+	private String postType;//=TYPE1;
+
+	public static final String TYPE1 = "1";
+
+	public static final String TYPE2 = "2";
+
 	@Id
 	@Column(name = "post_id")
 	private int postId;
@@ -63,6 +81,7 @@ public class Post extends BaseDomain {
 	//private int topicId;
 	private Topic topic;
 
+	/*
 	public void setPostType(int postType) {
 		this.postType = postType;
 	}
@@ -70,6 +89,16 @@ public class Post extends BaseDomain {
 	public int getPostType() {
 		return postType;
 	}
+	*/
+
+	public void setPostType(String postType) {
+		this.postType = postType;
+	}
+
+	public String getPostType() {
+		return postType;
+	}
+
 
 	public Date getCreateTime() {
 		return createTime;

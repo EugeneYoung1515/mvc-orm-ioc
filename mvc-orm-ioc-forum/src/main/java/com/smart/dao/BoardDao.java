@@ -5,5 +5,5 @@ import com.smart.core.orm.BaseDao;
 import com.smart.domain.Board;
 
 @Repository
-public class BoardDao extends BaseDaoSub<Board> {
+public class BoardDao extends BaseDao<Board> {
 }

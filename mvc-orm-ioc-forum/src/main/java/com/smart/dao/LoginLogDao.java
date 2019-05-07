@@ -5,5 +5,5 @@ import com.smart.core.orm.BaseDao;
 import com.smart.domain.LoginLog;
 
 @Repository
-public class LoginLogDao extends BaseDaoSub<LoginLog> {
+public class LoginLogDao extends BaseDao<LoginLog> {
 }

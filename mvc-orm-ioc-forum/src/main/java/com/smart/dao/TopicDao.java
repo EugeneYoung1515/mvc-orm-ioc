@@ -5,7 +5,7 @@ import com.smart.core.orm.BaseDao;
 import com.smart.domain.Topic;
 
 @Repository
-public class TopicDao extends BaseDaoSub<Topic> {
+public class TopicDao extends BaseDao<Topic> {
 
     public Page getPagedTopics(int boardId,int pageNo,int pageSize) throws Exception{
         String sql = "SELECT * FROM t_topic WHERE board_id = ? ORDER BY last_post DESC";

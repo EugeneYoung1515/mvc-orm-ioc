@@ -33,7 +33,6 @@
 /Users/eugeneyoung/Downloads/ubuntu/GitHub/mvc-orm-ioc/mvc-orm-ioc-forum/src/main/java/com/smart/domain/Topic.java
 /Users/eugeneyoung/Downloads/ubuntu/GitHub/mvc-orm-ioc/mvc-orm-ioc-forum/src/main/java/com/smart/service/ForumServiceImpl.java
 /Users/eugeneyoung/Downloads/ubuntu/GitHub/mvc-orm-ioc/mvc-orm-ioc-forum/src/main/java/com/smart/domain/Post.java
-/Users/eugeneyoung/Downloads/ubuntu/GitHub/mvc-orm-ioc/mvc-orm-ioc-forum/src/main/java/com/smart/dao/BaseDaoSub.java
 /Users/eugeneyoung/Downloads/ubuntu/GitHub/mvc-orm-ioc/mvc-orm-ioc-forum/src/main/java/com/smart/domain/Board.java
 /Users/eugeneyoung/Downloads/ubuntu/GitHub/mvc-orm-ioc/mvc-orm-ioc-forum/src/main/java/com/smart/web/BoardManageController.java
 /Users/eugeneyoung/Downloads/ubuntu/GitHub/mvc-orm-ioc/mvc-orm-ioc-forum/src/main/java/com/smart/core/ioc/annotations/Service.java

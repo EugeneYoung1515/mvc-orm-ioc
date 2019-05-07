@@ -24,7 +24,6 @@ com/smart/domain/BaseDomain.class
 com/smart/domain/Post.class
 com/smart/captcha/GraphicHelper.class
 com/smart/core/mvc/annotationhandlers/RequestMappingHandler.class
-com/smart/dao/BaseDaoSub.class
 com/smart/core/ioc/annotations/Controller.class
 com/smart/web/ForumManageController.class
 com/smart/domain/Board.class

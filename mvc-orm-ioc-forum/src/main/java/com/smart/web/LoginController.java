@@ -34,6 +34,7 @@ public class LoginController extends BaseController {
      */
 	@RequestMapping(value = "/login/doLogin",method = RequestMethod.POST)
 	public ModelAndView login(HttpServletRequest request, User user) throws Exception{
+		System.out.println(user);
 		try {
 			String captcha = (String) request.getSession().getAttribute("Captcha");
 			System.out.println(captcha);

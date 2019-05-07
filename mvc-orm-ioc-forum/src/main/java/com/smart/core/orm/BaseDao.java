@@ -1,5 +1,7 @@
 package com.smart.core.orm;
 
+import com.smart.core.ioc.ClassUtil;
+import com.smart.core.ioc.ComponentFactory;
 import com.smart.core.orm.annotation.Column;
 import com.smart.core.orm.annotation.Id;
 import com.smart.core.orm.annotation.ManyToOne;
@@ -25,9 +27,9 @@ import java.util.regex.Pattern;
 
 public class BaseDao<T> {
 
-    private BoardDao boardDao;
-    private TopicDao topicDao;
-    private UserDao userDao;
+    //private BoardDao boardDao;
+    //private TopicDao topicDao;
+    //private UserDao userDao;
 
     private Map<String,String> FKToClassName=new HashMap<>();;
 
@@ -130,6 +132,8 @@ public class BaseDao<T> {
                     System.out.println(value);
                 }
                 */
+
+                //System.out.println(value +" "+value.getClass());
                 field.set(obj,value);//Field set //看文档 原始类型的包装类型会被转为基本数据类型
 
             }
@@ -138,6 +142,7 @@ public class BaseDao<T> {
         return list;
     }
 
+    /*
     private Object methodInvoke(String className,int id) throws Exception{
         if(className.equals("Board")){
             return boardDao.get(id);
@@ -150,6 +155,22 @@ public class BaseDao<T> {
         }
         return null;
     }
+    */
+
+    private Object methodInvoke(String className,int id) throws Exception{
+        //className 是model类的简单名
+        //下面的repositoryMap的key是dao类的简单名
+        //现在需要一个model类简单名到dao类对象的映射
+
+        //System.out.println(className);
+        Object dao = ComponentFactory.modelSimpleNameToDaoMap.get(className);
+        //System.out.println(dao);
+        //System.out.println(ComponentFactory.modelSimpleNameToDaoMap);
+        //BaseDao dao1 = (BaseDao)dao;//这样居然可以 ComponentFactory也有这样一处这样用
+        BaseDao<?> dao1 = (BaseDao<?>)dao;
+        return dao1.get(id);
+    }
+
 
     public T get(int id) throws Exception{
         String sql = "SELECT * FROM "+table+" WHERE "+tablePK+" =?";
@@ -255,6 +276,7 @@ public class BaseDao<T> {
         return executeUpdate(sql.toString(),values);
     }
 
+    /*
     public int methodInvoke2(Object obj,String className){
         if(className.equals("Board")){
             Board board = (Board)obj;
@@ -270,6 +292,32 @@ public class BaseDao<T> {
         }
         return -1;
     }
+    */
+
+    public Integer methodInvoke2(Object obj,String className){
+        Object dao = ComponentFactory.modelSimpleNameToDaoMap.get(className);
+        BaseDao<?> dao1 = (BaseDao<?>)dao;
+        Class<?> clz = dao1.getEntityClass();
+        Field[] fields = clz.getDeclaredFields();
+        for(Field field:fields){
+            field.setAccessible(true);
+            if(field.isAnnotationPresent(Id.class)){
+                //System.out.println("id+test"+className);
+                Integer id = null;
+                try {
+                    id = (Integer)field.get(obj);
+                }catch (Exception ex){
+                    ex.printStackTrace();
+                }
+                return id;
+            }
+        }
+        return null;
+    }
+
+
+    //可能需要把所有使用类的简单名全部替换成全限定名
+
 
     public Page pageQuery(String sql, int pageNo, int pageSize, final Object... values) throws Exception{
         String countQueryString = "SELECT COUNT(*) " + removeSelect(removeOrders(sql));
@@ -331,6 +379,7 @@ public class BaseDao<T> {
     }
     */
 
+    /*
     public void setBoardDao(BoardDao boardDao) {
         this.boardDao = boardDao;
     }
@@ -342,6 +391,7 @@ public class BaseDao<T> {
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
+    */
 
     /*
     public LocalDateTime convertToEntityAttribute(Timestamp ts) {
@@ -355,4 +405,8 @@ public class BaseDao<T> {
         return Timestamp.valueOf(ldt);
     }
     */
+
+    public Class<T> getEntityClass() {
+        return entityClass;
+    }
 }

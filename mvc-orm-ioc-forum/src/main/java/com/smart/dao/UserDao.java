@@ -7,7 +7,7 @@ import com.smart.domain.User;
 import java.util.List;
 
 @Repository
-public class UserDao extends BaseDaoSub<User> {
+public class UserDao extends BaseDao<User> {
     public User getUserByUserName(String userName) throws Exception{
         List<User> list = executeQuery("SELECT * FROM t_user WHERE user_name = ?",userName);
         if(list.size()!=0){
